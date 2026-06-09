@@ -1,0 +1,84 @@
+{
+  "commit": "74aedb5",
+  "date": "2026-05-05",
+  "model": "Qwen3-4B",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "prefill_heavy": {
+    "prompt_len": 10000,
+    "output_len": 1,
+    "metrics": {
+      "ttft_ms": {
+        "avg_ms": 1209.111834,
+        "p50_ms": 1209.108622,
+        "p95_ms": 1209.412192,
+        "p99_ms": 1209.637316,
+        "max_ms": 1209.637316,
+        "samples": 20
+      },
+      "first_decode_step_ms": null,
+      "steady_tpot_ms": null,
+      "e2e_ms": {
+        "avg_ms": 1209.114491,
+        "p50_ms": 1209.110862,
+        "p95_ms": 1209.416873,
+        "p99_ms": 1209.639897,
+        "max_ms": 1209.639897,
+        "samples": 20
+      },
+      "generated_tokens": {
+        "min": 1,
+        "max": 1,
+        "avg": 1.0,
+        "samples": 20
+      },
+      "request_tok_s": 0.8270515381887247,
+      "decode_tok_s": null
+    }
+  },
+  "decode_heavy": {
+    "prompt_len": 1024,
+    "output_len": 256,
+    "metrics": {
+      "ttft_ms": {
+        "avg_ms": 95.62448699999999,
+        "p50_ms": 95.598145,
+        "p95_ms": 95.78653,
+        "p99_ms": 96.093804,
+        "max_ms": 96.093804,
+        "samples": 20
+      },
+      "first_decode_step_ms": {
+        "avg_ms": 11.525608,
+        "p50_ms": 11.529309999999999,
+        "p95_ms": 11.53942,
+        "p99_ms": 11.542950999999999,
+        "max_ms": 11.542950999999999,
+        "samples": 20
+      },
+      "steady_tpot_ms": {
+        "avg_ms": 11.312062,
+        "p50_ms": 11.313483,
+        "p95_ms": 11.333644,
+        "p99_ms": 11.427686,
+        "max_ms": 11.674155,
+        "samples": 5080
+      },
+      "e2e_ms": {
+        "avg_ms": 2980.418332,
+        "p50_ms": 2981.6170309999998,
+        "p95_ms": 2982.586711,
+        "p99_ms": 2982.6035279999996,
+        "max_ms": 2982.6035279999996,
+        "samples": 20
+      },
+      "generated_tokens": {
+        "min": 256,
+        "max": 256,
+        "avg": 256.0,
+        "samples": 20
+      },
+      "request_tok_s": 85.89398247263804,
+      "decode_tok_s": 88.39466417018542
+    }
+  }
+}

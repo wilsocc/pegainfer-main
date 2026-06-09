@@ -1,0 +1,221 @@
+[workspace]
+resolver = "3"
+default-members = ["pegainfer-server"]
+members = [
+    "pegainfer-engine",
+    "pegainfer-vllm-frontend",
+    "pegainfer-sim",
+    "pegainfer-vllm-support",
+    "pegainfer-server",
+    "pegainfer-core",
+    "pegainfer-cupti",
+    "pegainfer-kernels",
+    "pegainfer-bench",
+    "pegainfer-deepseek-v4",
+    "pegainfer-deepseek-v2-lite",
+    "pegainfer-kimi-k2",
+    "pegainfer-qwen3-4b",
+    "pegainfer-qwen35-4b",
+    "pegainfer-kv-cache",
+    # ---- pegainfer-comm (EP all-to-all) ----
+    "pegainfer-comm",
+    "pegainfer-comm/crates/pegainfer-comm-build-utils",
+    "pegainfer-comm/crates/pegainfer-comm-cuda-sys",
+    "pegainfer-comm/crates/pegainfer-comm-cudart-sys",
+    "pegainfer-comm/crates/pegainfer-comm-gdrapi-sys",
+    "pegainfer-comm/crates/pegainfer-comm-libibverbs-sys",
+    "pegainfer-comm/crates/pegainfer-comm-cuda-lib",
+    "pegainfer-comm/crates/pegainfer-comm-thread-lib",
+    "pegainfer-comm/crates/pegainfer-comm-proc-lib",
+    "pegainfer-comm/crates/pegainfer-comm-logging-lib",
+    "pegainfer-comm/crates/pegainfer-comm-torch-lib",
+    "pegainfer-comm/crates/pegainfer-comm-fabric-lib",
+    "pegainfer-comm/crates/pegainfer-comm-fabric-debug",
+    "pegainfer-comm/crates/pegainfer-comm-a2a-kernels",
+    "pegainfer-comm/crates/pegainfer-comm-p2p-all-to-all",
+    "pegainfer-comm/crates/pegainfer-comm-python-ext",
+    # ---- dynamo kvbm (ported, Apache-2.0) ----
+    "kvbm/dynamo-tokens",
+    "kvbm/dynamo-memory",
+    "kvbm/dynamo-kv-hashing",
+    "kvbm/dynamo-kv-router",
+    "kvbm/kvbm-common",
+    "kvbm/kvbm-config",
+    "kvbm/kvbm-consolidator",
+    "kvbm/kvbm-engine",
+    "kvbm/kvbm-kernels",
+    "kvbm/kvbm-logical",
+    "kvbm/kvbm-physical",
+]
+
+# Inherited by dynamo-ported crates that use `edition.workspace = true` etc.
+[workspace.package]
+version = "1.2.0"
+edition = "2024"
+description = "Dynamo Inference Framework"
+authors = ["NVIDIA Inc. <sw-dl-dynamo@nvidia.com>"]
+license = "Apache-2.0"
+homepage = "https://github.com/ai-dynamo/dynamo"
+repository = "https://github.com/ai-dynamo/dynamo.git"
+keywords = ["llm", "genai", "inference", "nvidia", "distributed"]
+
+[workspace.dependencies]
+# ---- dynamo kvbm internal crates ----
+dynamo-tokens = { path = "kvbm/dynamo-tokens" }
+dynamo-memory = { path = "kvbm/dynamo-memory" }
+dynamo-kv-hashing = { path = "kvbm/dynamo-kv-hashing" }
+dynamo-kv-router = { path = "kvbm/dynamo-kv-router", features = ["metrics"] }
+kvbm-common = { path = "kvbm/kvbm-common" }
+kvbm-config = { path = "kvbm/kvbm-config" }
+kvbm-consolidator = { path = "kvbm/kvbm-consolidator" }
+kvbm-engine = { path = "kvbm/kvbm-engine" }
+kvbm-kernels = { path = "kvbm/kvbm-kernels" }
+kvbm-logical = { path = "kvbm/kvbm-logical" }
+kvbm-physical = { path = "kvbm/kvbm-physical" }
+# ---- third-party ----
+anyhow = "1.0"
+async-nats = { version = "0.45.0", features = ["service"] }
+async-stream = "0.3"
+async-trait = "0.1"
+axum = "0.8"
+bincode = "2.0.1"
+bindgen = "0.72.1"
+bytes = { version = "1.10.1", features = ["serde"] }
+bytesize = "2.3.1"
+chrono = { version = "0.4", default-features = false, features = ["serde", "clock"] }
+cc = "1.2"
+clap = { version = "4.6.1", features = ["derive"] }
+colored = "3"
+comfy-table = "7.2"
+criterion = { version = "0.8", features = ["html_reports"] }
+crossbeam-channel = "0.5"
+# 0.19.5+ required: per-symbol lazy loading keeps the cuda-12090 binding
+# level from imposing a runtime driver floor (issue #263).
+cudarc = { version = "0.19.7", features = [
+    "cuda-12090",
+    "cublas",
+    "f16",
+    "nccl",
+] }
+cxx = "1.0.187"
+cxx-build = "1.0.187"
+dashmap = { version = "6.1.0", features = ["inline"] }
+derive_builder = "0.20"
+derive-getters = "0.5"
+either = { version = "1.13", features = ["serde"] }
+etcd-client = { version = "0.17.0", features = ["tls"] }
+fastrace = { version = "0.7.17", features = ["enable"] }
+futures = "0.3"
+half = { version = "2.7", features = ["num-traits"] }
+humantime = "2.2.0"
+hex = "0.4"
+indexmap = "2"
+is-terminal = "0.4"
+log = "0.4"
+logforth = { version = "0.29", features = ["starter-log", "layout-text", "diagnostic-task-local"] }
+libc = "0.2"
+memmap2 = "0.9"
+mio = "=1.1.1"
+mockall = "0.13.1"
+nvtx = "1.3.0"
+once_cell = "1.21.3"
+opentelemetry = { version = "0.31.0", features = ["trace", "logs"] }
+opentelemetry-appender-tracing = "0.31.0"
+opentelemetry-otlp = { version = "0.31.0", features = ["trace", "logs", "grpc-tonic"] }
+opentelemetry_sdk = { version = "0.31.0", features = ["trace", "logs", "rt-tokio"] }
+ordered-float = "4"
+oneshot = "0.1.11"
+parking_lot = "0.12.5"
+pegainfer-bench = { path = "pegainfer-bench" }
+pegainfer-core = { path = "pegainfer-core" }
+pegainfer-kv-cache = { path = "pegainfer-kv-cache" }
+pegainfer-cupti = { path = "pegainfer-cupti" }
+pegainfer-deepseek-v4 = { path = "pegainfer-deepseek-v4" }
+pegainfer-engine = { path = "pegainfer-engine" }
+pegainfer-kernels = { path = "pegainfer-kernels" }
+pegainfer-kimi-k2 = { path = "pegainfer-kimi-k2" }
+pegainfer-qwen3-4b = { path = "pegainfer-qwen3-4b" }
+pegainfer-qwen35-4b = { path = "pegainfer-qwen35-4b" }
+pegainfer-deepseek-v2-lite = { path = "pegainfer-deepseek-v2-lite" }
+pegainfer-vllm-frontend = { path = "pegainfer-vllm-frontend" }
+pegainfer-vllm-support = { path = "pegainfer-vllm-support" }
+pegainfer-comm = { path = "pegainfer-comm" }
+pkg-config = "0.3.32"
+prometheus = "0.14"
+postcard = { version = "1.1.3", features = ["alloc", "use-std"] }
+pyo3 = { version = "0.27.1", features = ["anyhow"] }
+rand = "0.10"
+smallvec = { version = "1.15.1", features = ["serde", "union"] }
+syscalls = "0.7.0"
+thiserror = "2.0.17"
+tracing = "0.1.41"
+tracing-core = "0.1.34"
+tracing-log = "0.2.0"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter", "json"] }
+rmp-serde = "1.3"
+rmpv = "1.3"
+reqwest = { version = "0.12", default-features = false, features = ["stream"] }
+safetensors = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.149"
+tempfile = "3"
+sha2 = "0.11"
+tmq = "0.5.0"
+tokio = { version = "1", features = ["full"] }
+tokio-stream = "0.1"
+tokio-util = "0.7"
+toml = "1.1"
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace"] }
+tracing-opentelemetry = "0.32.0"
+url = { version = "2.5", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+validator = { version = "0.20.0", features = ["derive"] }
+velo = "0.1.0"
+vllm-engine-core-client = { git = "https://github.com/vllm-project/vllm.git", rev = "4aaed4ca225a3745aa1e18864dad0599d3ac7626" }
+vllm-server = { git = "https://github.com/vllm-project/vllm.git", rev = "4aaed4ca225a3745aa1e18864dad0599d3ac7626" }
+vllm-text = { git = "https://github.com/vllm-project/vllm.git", rev = "4aaed4ca225a3745aa1e18864dad0599d3ac7626" }
+vllm-tokenizer = { git = "https://github.com/vllm-project/vllm.git", rev = "4aaed4ca225a3745aa1e18864dad0599d3ac7626" }
+xxhash-rust = { version = "0.8", features = ["xxh3", "const_xxh3"] }
+zeromq = { version = "0.6.0", default-features = false, features = [
+    "tokio-runtime",
+    "all-transport",
+] }
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -2 }
+# Allowed pedantic lints (too noisy for this codebase)
+cast_lossless = "allow"
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+collapsible_else_if = "allow"
+collapsible_if = "allow"
+doc_markdown = "allow"
+implicit_hasher = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+similar_names = "allow"
+too_many_arguments = "allow"
+too_many_lines = "allow"
+uninlined_format_args = "allow"
+upper_case_acronyms = "allow"
+# Cherry-picked nursery lints
+redundant_clone = "warn"
+unused_peekable = "warn"
+# Restriction lints worth enforcing
+dbg_macro = "warn"
+exit = "warn"
+get_unwrap = "warn"
+print_stdout = "allow"
+print_stderr = "allow"
+rc_buffer = "warn"
+rc_mutex = "warn"
+rest_pat_in_fully_bound_structs = "warn"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "warn"
+unreachable_pub = "warn"
